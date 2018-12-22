@@ -4,23 +4,19 @@ class F:
         self.__name__ = fn.__name__
         self.__doc__ = fn.__doc__
 
-    def __rshift__(self, other):
-        """F piping: x >> f -> f(x)."""
-        return other(self)
-
     def __rrshift__(self, other):
-        """F piping: x >> f -> f(x)."""
+        """Function piping: x >> f -> f(x)."""
         return self(other)
 
     def __add__(self, other):
-        """F composition: (f + g + h)(x) -> f(g(h(x)))."""
+        """Function composition: (f + g + h)(x) -> f(g(h(x)))."""
         f = lambda *args, **kwargs: self(other(*args, **kwargs))
         f.__name__ = 'compose<{}><{}>'.format(self.__name__, other.__name__)
         f.__doc__ = 'Composed function.'
         return F(f)
 
     def __pow__(self, other):
-        """F pairing: (f ** g)(1, 2) -> (f(1), g(2))."""
+        """Function pairing: (f ** g)(1, 2) -> (f(1), g(2))."""
         f = lambda x1, x2: (self(x1), other(x2))
         f.__name__ = 'pair<{}><{}>'.format(self.__name__, other.__name__)
         f.__doc__ = 'Paired function.'

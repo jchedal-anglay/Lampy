@@ -14,7 +14,7 @@ print(f(10))  # 55
 # Piping using >>
 10 >> range >> map(succ) >> sum >> print  # 55
 
-# Pairing function
+# Pairing using **
 f = succ ** pred
 print(f(0, 0)  # (1, -1)
 
@@ -24,7 +24,7 @@ print(map(succ, (1, 2, 3)))  # (2, 3, 4)
 print(map(succ, {1, 2, 3}))  # {2, 3, 4}
 print(*map(succ, 3 >> range))  # generator, 2, 3, 4
 
-# it is also possible to force the returned value to be a generator
+# It is also possible to force the returned value to be a generator
 print(map(succ, [1, 2, 3], gen=True))  # <generator object map.<locals>.<genexpr> at blablabla>
 
 # map, filter and reduce are now curried functions

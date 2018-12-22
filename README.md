@@ -46,4 +46,6 @@ print(identity(5))  # returns its argument: 5
 f = const(42)  # will always return 42, curried
 10 >> f >> print  # 42
 
-flip(
+from math import pow
+f = flip(pow)
+print(f(3, 5), pow(5, 3))  # 125.0 125.0

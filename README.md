@@ -7,6 +7,9 @@ from ignite import *
 def func(x, y, z):
   pass
   
+# Manual wrapping
+F(func)
+
 # Composition using +
 f = sum + map(succ) + range
 print(f(10))  # 55

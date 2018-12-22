@@ -1,4 +1,3 @@
-* How to use  
 ```python
 # This contains wrapped version of all builtin functions and some useful functions
 from ignite import *
@@ -49,3 +48,4 @@ f = const(42)  # will always return 42, curried
 from math import pow
 f = flip(pow)
 print(f(3, 5), pow(5, 3))  # 125.0 125.0
+```

@@ -19,7 +19,7 @@ print(f(10))  # 55
 
 # Pairing using **
 f = succ ** pred
-print(f(0, 0)  # (1, -1)
+print(f(0, 0))  # (1, -1)
 
 # map and filter now try to coerce the returned sequence to their base type
 print(map(succ, [1, 2, 3]))  # [2, 3, 4]

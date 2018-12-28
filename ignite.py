@@ -8,6 +8,10 @@ class F:
         """Function piping: x >> f -> f(x)."""
         return self(other)
 
+    def __rshift__(self, other):
+        """Function piping: x >> f -> f(x)."""
+        return other(self)
+
     def __add__(self, other):
         """Function composition: (f + g + h)(x) -> f(g(h(x)))."""
         f = lambda *args, **kwargs: self(other(*args, **kwargs))

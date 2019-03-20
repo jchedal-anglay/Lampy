@@ -1,6 +1,6 @@
 ```python
 # This contains wrapped version of all builtin functions and some useful functions
-from ignite import *
+from fpy import *
 
 # Declaration
 @F

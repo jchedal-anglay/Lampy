@@ -1,6 +1,6 @@
 ```python
 # This contains wrapped version of all builtin functions and some useful functions
-from fpy import *
+from lampy import *
 
 # Declaration
 @F

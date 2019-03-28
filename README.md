@@ -17,10 +17,6 @@ print(f(10))  # 55
 # Piping using >>
 10 >> range >> map(succ) >> sum >> print  # 55
 
-# Pairing using **
-f = succ ** pred
-print(f(0, 0))  # (1, -1)
-
 # map and filter now try to coerce the returned sequence to their base type
 print(map(succ, [1, 2, 3]))  # [2, 3, 4]
 print(map(succ, (1, 2, 3)))  # (2, 3, 4)

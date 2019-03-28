@@ -1,4 +1,8 @@
+import builtins
+import functools
 import operator
+
+from . import stream
 
 
 class F:
@@ -60,11 +64,11 @@ def map(fn, xs=None, gen=False):
         f.__name__ = map.__name__
         f.__doc__ = map.__doc__
         return F(f)
-    seq = (fn(x) for x in xs)
+    seq = builtins.map(fn(x) for x in xs)
     try:
         return type(xs)(seq) if not gen else seq
     except:
-        return seq
+        return stream.Stream(seq)
 
 
 @F
@@ -76,11 +80,11 @@ def filter(fn, xs=None, gen=False):
         f.__name__ = filter.__name__
         f.__doc__ = filter.__doc__
         return F(f)
-    seq = (x for x in xs if fn(x))
+    seq = builtins.filter(x for x in xs if fn(x))
     try:
         return type(xs)(seq) if not gen else seq
     except:
-        return seq
+        return stream.Stream(seq)
 
 
 @F
@@ -91,11 +95,7 @@ def reduce(fn, xs=None, initializer=None):
         f.__name__ = reduce.__name__
         f.__doc__ = reduce.__doc__
         return F(f)
-    it = iter(xs)
-    acc = next(it) if initializer is None else initializer
-    for element in it:
-        acc = fn(acc, element)
-    return acc
+    return functools.reduce(fn, xs, initializer)
 
 
 @F

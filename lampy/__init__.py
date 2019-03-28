@@ -1,4 +1,4 @@
-from core import *
+from lampy.core import *
 
 __all__ = [
     "F",

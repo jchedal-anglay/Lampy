@@ -2,7 +2,7 @@ import functools
 import itertools
 
 
-def inplace(f):
+def duplicate(f):
     def wrapper(self, *args, **kwargs):
         return f(self.copy(), *args, **kwargs)
 
@@ -25,7 +25,7 @@ class Stream:
         """Yield the first element of the stream"""
         return next(self.iterator)
 
-    @inplace
+    @duplicate
     def next_(self):
         return self.next()
 
@@ -58,7 +58,7 @@ class Stream:
         self.iterator = iter(itertools.chain([x], self.iterator))
         return self
 
-    @inplace
+    @duplicate
     def push_(self, x):
         return self.push(x)
 
@@ -67,7 +67,7 @@ class Stream:
         self.next()
         return self
 
-    @inplace
+    @duplicate
     def drop_(self):
         return self.drop()
 
@@ -76,7 +76,7 @@ class Stream:
         for _ in self:
             pass
 
-    @inplace
+    @duplicate
     def consume_(self):
         return self.consume()
 
@@ -88,7 +88,7 @@ class Stream:
             raise ValueError("n must be positive")
         return Stream(self.next() for _ in range(n))
 
-    @inplace
+    @duplicate
     def take_(self, n):
         self.take(n)
 
@@ -97,7 +97,7 @@ class Stream:
         self.take(n)
         return self
 
-    @inplace
+    @duplicate
     def skip_(self, n):
         self.skip(n)
 
@@ -115,7 +115,7 @@ class Stream:
         self.iterator = iter(_take_while())
         return self
 
-    @inplace
+    @duplicate
     def take_while_(self, f):
         return self.take_while(f)
 
@@ -129,7 +129,7 @@ class Stream:
                 break
         return self
 
-    @inplace
+    @duplicate
     def drop_while_(self, f):
         return self.drop_while(f)
 
@@ -138,7 +138,7 @@ class Stream:
         self.iterator = iter(map(f, self.iterator))
         return self
 
-    @inplace
+    @duplicate
     def map_(self, f):
         return self.map(f)
 
@@ -147,7 +147,7 @@ class Stream:
         self.iterator = iter(filter(f, self.iterator))
         return self
 
-    @inplace
+    @duplicate
     def filter_(self, f):
         return self.filter(f)
 
@@ -155,6 +155,6 @@ class Stream:
         """Return the result of f folded on the stream"""
         return functools.reduce(f, self.iterator, initializer)
 
-    @inplace
+    @duplicate
     def reduce_(self, f, initializer=None):
         return self.reduce(f, initializer=initializer)

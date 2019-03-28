@@ -64,7 +64,7 @@ def map(fn, xs=None, gen=False):
         f.__name__ = map.__name__
         f.__doc__ = map.__doc__
         return F(f)
-    seq = builtins.map(fn(x) for x in xs)
+    seq = builtins.map(fn, xs)
     try:
         return type(xs)(seq) if not gen else seq
     except:
@@ -74,13 +74,13 @@ def map(fn, xs=None, gen=False):
 @F
 def filter(fn, xs=None, gen=False):
     """Filter an iterable based on a function , curried
-    if gen is True, it will try to coerce the returned generator into the input's type"""
+    if gen is False, it will try to coerce the returned generator into the input's type"""
     if xs is None:
         f = lambda xs: filter(fn, xs)
         f.__name__ = filter.__name__
         f.__doc__ = filter.__doc__
         return F(f)
-    seq = builtins.filter(x for x in xs if fn(x))
+    seq = builtins.filter(fn, xs)
     try:
         return type(xs)(seq) if not gen else seq
     except:

@@ -2,13 +2,6 @@ import functools
 import itertools
 
 
-def duplicate(f):
-    def wrapper(self, *args, **kwargs):
-        return f(self.copy(), *args, **kwargs)
-
-    return wrapper
-
-
 class Stream:
     """Lazy sequence, based on generators"""
 
@@ -24,10 +17,6 @@ class Stream:
     def next(self):
         """Yield the first element of the stream"""
         return next(self.iterator)
-
-    @duplicate
-    def next_(self):
-        return self.next()
 
     def peek(self):
         """Return the first element of the stream, keep original stream intact"""
@@ -45,7 +34,7 @@ class Stream:
         return Stream(ys)
 
     def is_empty(self):
-        """Return True if stream is empty, else otherwise"""
+        """Return True if stream is empty, else False"""
         try:
             first = self.next()
         except StopIteration:
@@ -58,27 +47,15 @@ class Stream:
         self.iterator = iter(itertools.chain([x], self.iterator))
         return self
 
-    @duplicate
-    def push_(self, x):
-        return self.push(x)
-
     def drop(self):
         """Discard the first element and return the stream"""
         self.next()
         return self
 
-    @duplicate
-    def drop_(self):
-        return self.drop()
-
     def consume(self):
         """Force the evaluation of the stream, consume the stream"""
         for _ in self:
             pass
-
-    @duplicate
-    def consume_(self):
-        return self.consume()
 
     def take(self, n):
         """Return the prefix of length n of the stream"""
@@ -88,18 +65,10 @@ class Stream:
             raise ValueError("n must be positive")
         return Stream(self.next() for _ in range(n))
 
-    @duplicate
-    def take_(self, n):
-        self.take(n)
-
     def skip(self, n):
         """Return the original stream with the prefix of length n removed"""
         self.take(n)
         return self
-
-    @duplicate
-    def skip_(self, n):
-        self.skip(n)
 
     def take_while(self, f):
         """Return a newly created stream in which remain only the first few
@@ -115,10 +84,6 @@ class Stream:
         self.iterator = iter(_take_while())
         return self
 
-    @duplicate
-    def take_while_(self, f):
-        return self.take_while(f)
-
     def drop_while(self, f):
         """Return a new stream in which the first few elements such that f(x)
         have been dropped"""
@@ -129,32 +94,16 @@ class Stream:
                 break
         return self
 
-    @duplicate
-    def drop_while_(self, f):
-        return self.drop_while(f)
-
     def map(self, f):
         """Return a new stream with f mapped on each element"""
         self.iterator = iter(map(f, self.iterator))
         return self
-
-    @duplicate
-    def map_(self, f):
-        return self.map(f)
 
     def filter(self, f):
         """Return the stream filtered by f"""
         self.iterator = iter(filter(f, self.iterator))
         return self
 
-    @duplicate
-    def filter_(self, f):
-        return self.filter(f)
-
     def reduce(self, f, initializer=None):
         """Return the result of f folded on the stream"""
         return functools.reduce(f, self.iterator, initializer)
-
-    @duplicate
-    def reduce_(self, f, initializer=None):
-        return self.reduce(f, initializer=initializer)

@@ -1,0 +1,99 @@
+#+AUTHOR: Julien Chedal-Anglay
+
+Lampy is a small library meant to add some functional programming features to the language.
+It was made as a toy project, use it at your own risk.
+
+
+*** Demonstration of the function wrapper
+
+#+BEGIN_SRC python
+# This contains wrapped version of all builtin functions and some useful functions
+from lampy import *
+
+# Declaration
+@F
+def func(x, y, z):
+  pass
+
+# Manual wrapping
+F(func)
+
+# Composition using +
+f = sum + map(succ) + range
+print(f(10))  # 55
+
+# Piping using >>
+10 >> range >> map(succ) >> sum >> print  # 55
+
+# map and filter now try to coerce the returned sequence to their base type
+print(map(succ, [1, 2, 3]))  # [2, 3, 4]
+print(map(succ, (1, 2, 3)))  # (2, 3, 4)
+print(map(succ, {1, 2, 3}))  # {2, 3, 4}
+print(*map(succ, 3 >> range))  # generator, 2, 3, 4
+
+# It is also possible to force the returned value to be a generator
+print(map(succ, [1, 2, 3], gen=True))  # <generator object map.<locals>.<genexpr> at blablabla>
+
+# map, filter and reduce are now curried functions
+f = map(succ)
+print(f([1, 2, 3]))  # [2, 3, 4]
+# obviously, you can apply all the operators defined above to them
+[1, 2, 3] >> f >> print  # [2, 3, 4]
+
+# The builtin functions have been wrapped to support the piping, pairing and compose operators
+[1, 2, 3] >> sum >> print  # 6
+
+# The compose function also helps composing functions without using the operator, works even with unwrapped functions
+from math import sqrt
+print(compose(succ, sqrt)(10))  # 4.16227766016838
+
+# Many other handy functions...
+print(identity(5))  # returns its argument: 5
+f = const(42)  # will always return 42, curried
+10 >> f >> print  # 42
+
+from math import pow
+f = flip(pow)
+print(f(3, 5), pow(5, 3))  # 125.0 125.0
+#+END_SRC
+
+*** The stream module
+
+#+BEGIN_SRC python
+
+from lampy.stream import *
+
+iterator = Stream(x + 2 for x in range(13) if x % 2)
+
+# .next() and .pop() return the first element in the stream and remove the element from the iterator
+iterator.pop()  # 3
+
+# .peek() returns the element without removing it
+iterator.peek()  # 5
+
+# .copy() returns a copy of the stream object
+iterator.copy()  # <lampy.stream.Stream object at 0x123......>
+
+# .is_empty() returns True if the iterator is empty
+iterator.is_empty()  # False
+Stream(_ for _ in range(0)).is_empty()  # True
+
+# .push() adds an element to the iterator and returns the stream
+iterator.push(12).peek()  # 12
+
+# .drop() removes the element on top of the iterator and returns the stream
+iterator.drop().peek()  # 5
+
+# .consume() forces the evaluation of the entire stream, removing every value in the process
+iterator.copy().consume().is_empty()  # True
+
+# .take(n) returns a stream containing the n first element of the iterator, consuming them in the process
+iterator.take(4).next()  # 12
+iterator.peek()  # 5
+
+# .skip(n) returns the original stream with the n first elements removed
+iterator.skip(2).peek()  # 5
+
+# .map, .reduce and .filter are present as methods too
+print(*iterator.map(lambda x: x + 3))  # 13 15 17 19
+#+END_SRC

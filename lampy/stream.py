@@ -18,6 +18,10 @@ class Stream:
         """Yield the first element of the stream"""
         return next(self.iterator)
 
+    def pop(self):
+        """Alias for next"""
+        return next(self.iterator)
+
     def peek(self):
         """Return the first element of the stream, keep original stream intact"""
         try:

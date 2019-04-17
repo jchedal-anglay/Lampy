@@ -4,6 +4,16 @@ Lampy is a small library meant to add some functional programming features to th
 It was made as a toy project, use it at your own risk.
 
 
+*** How to install ?
+
+#+BEGIN_SRC bash
+cd path/to/your/project
+git clone https://github.com/Lgneous/Lampy ./lampy
+pip install -e ./lampy
+#+END_SRC
+
+Don't forget to activate your virtual environment if you use one!
+
 *** Demonstration of the function wrapper
 
 #+BEGIN_SRC python

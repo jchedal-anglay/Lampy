@@ -7,6 +7,10 @@ It was made as a toy project, use it at your own risk.
 *** How to install ?
 
 #+BEGIN_SRC bash
+python -m pip install -e git+https://github.com/Lgneous/Lampy#egg=lampy
+#+END_SRC
+or
+#+BEGIN_SRC bash
 cd path/to/your/project
 git clone https://github.com/Lgneous/Lampy ./lampy
 pip install -e ./lampy
